@@ -1,0 +1,290 @@
+#include <iostream>
+#include <stdlib.h>
+#include <time.h>
+
+using namespace std;
+
+class Zaidimas
+{
+private:
+	const static int ilgis = 10;
+	const static int plotis = 10;
+	int atskyrimas;
+	int laivu_kiekis;
+	int lentele[ilgis][plotis];
+public:
+	Zaidimas() {
+		laivu_kiekis = 10;
+		atskyrimas = 0;
+	}
+
+	void Tuscia_Lentele() {
+		for (int x = 0; x < ilgis; x++) {
+			for (int y = 0; y < plotis; y++) {
+				lentele[x][y] = 0;
+			}
+		}
+	}
+	void Koordinates(){
+		cout<< "   0 1 2 3 4 5 6 7 8 9" << endl;
+		cout << "-----------------------" << endl;
+		for (int x = 0; x < ilgis; x++)
+		{
+			cout << atskyrimas << "| ";
+			atskyrimas++;
+			for (int y = 0; y < ilgis; y++)
+			{
+				cout << lentele[x][y] << " ";
+			}
+			cout << endl;
+		}
+	}
+	int Sveiki_laivai() {
+		int c = 10;
+		for (int x = 0; x < ilgis; x++)
+		{
+			for (int y = 0; y < plotis; y++)
+			{
+				if (lentele[x][y] == 1)
+				{
+					c--;
+				}
+			}
+		}
+		return c;
+	}
+		bool Puolimas(int x, int y) {
+			if (lentele[x][y] == 1) {
+				lentele[x] [y] = 2;
+				return true;
+			}
+			return false;
+		}
+		~Zaidimas() {};
+};
+class Lentele : public Zaidimas
+{
+private:
+	const static int ilgis = 10;
+	const static int plotis = 10;
+	char lentele[ilgis][plotis];
+public: 
+	Lentele():Zaidimas() {
+	int	laivu_kiekis = 10;
+	int	atskyrimas = 0;
+	}
+	void Braizom_lentele() {
+		for (int x = 0; x < ilgis; x++)
+		{
+			for (int y = 0; y < plotis; y++)
+			{
+				if (lentele[x][y] != 1) {
+					lentele[x][y] = '-';
+				}
+			}
+		}
+	
+	}
+	void Lenteles_Atnaujinimas(bool i, int x, int y) {
+		int xPos = x , yPos = y;
+		if (i == true) 
+		{
+			lentele[xPos][yPos] = 'Y';
+		}
+		else
+		{
+			lentele[xPos][yPos] = 'N';
+		}
+	}
+	void Lenteles_Rodymas() {
+		int a = 0;
+		cout << "  0 1 2 3 4 5 6 7 8 9" << endl;
+		for (int x = 0; x < ilgis; x++) {
+			cout << a << " ";
+			a++;
+			for (int y = 0; y < plotis; y++) {
+				cout << lentele[x][y] << " ";
+			}
+			cout << endl;
+		}
+	}
+	void Zaidejo_lentele() {
+		int xPos, yPos, kelintas = 1;
+		for (int i = 0; i < 10; i++) {
+			cout << "Iveskite koordinates kurioje vietoje norite pastatyti savo " << kelintas << " viena kvadrata uzimtanti laiveli" << endl;
+			cin >> xPos >> yPos;
+			if (lentele[xPos][yPos] != 1) {
+				lentele[xPos][yPos] = '1';
+				system("CLS");
+				Lenteles_Rodymas();
+			}
+			kelintas++;
+		}
+
+		system("CLS");
+	}
+	void Boto_Lentele() {
+		{
+			int laivai = 0;
+			while (laivai < 10)
+			{
+				int xPos = rand() % 10;
+				int yPos = rand() % 10;
+
+				if (lentele[xPos][yPos] != 1)
+				{
+					laivai++;
+					lentele[xPos][yPos] = 1;
+				}
+
+			}
+
+		}
+	}
+
+	~Lentele() {};
+};
+
+/*class Rezultatai {
+private:
+	int botas_rado_laivu=0;
+	int zaidejas_rado_laivu = 0;
+public:
+	Rezultatai() {
+		int botas_rado_laivu = 0, int zaidejas_rado_laivu = 0
+	}
+
+	unsigned int getCount() {
+		return count;
+	}
+	void operator++() { // operacijos "++" perkrovimas
+		++count;
+	}
+};*/
+
+
+int main() {
+
+	char kartojam;
+	do {
+		srand(time(NULL));
+
+		Zaidimas zaidejas;
+		Zaidimas botas;
+
+		Lentele zaidejolentele;
+		Lentele botolentele;
+
+		zaidejolentele.Braizom_lentele();
+		botolentele.Braizom_lentele();
+
+		cout << "Zaidejo lentele: " << endl;
+		zaidejolentele.Lenteles_Rodymas();
+		zaidejolentele.Zaidejo_lentele();
+
+		zaidejolentele.Lenteles_Rodymas();
+		cout << "-----------------------" << endl;
+		cout << "Boto lentele: " << endl;
+		botolentele.Boto_Lentele();
+		botolentele.Lenteles_Rodymas();
+
+		int position1, position2; // makes two integers for the positions to be stored inside
+		char which; // makes a char variable called which, will be used to store the result of asking the user if they want to forfeit.
+		int zaidejas_rado_laivu = 0;
+		int zaidejui_liko_numusti_laivu = 10;
+
+		int botas_rado_laivu = 0;
+		int botui_liko_numusti_laivu = 10;
+
+		bool ar_zaidejas_numuse;
+		bool ar_botas_numuse;
+
+		while (zaidejas_rado_laivu < 10 || botas_rado_laivu < 10) // loops while found is less than 10.
+		{
+			int cpuX = rand() % 10; // makes a random integer between 0 and 9, hence the mod 10.
+			int cpuY = rand() % 10;
+
+			if (botas.Puolimas(cpuX, cpuY)) // checks the boolean output of the Attack function for the cpu
+			{
+				ar_botas_numuse = true;
+				botas_rado_laivu++;
+				botui_liko_numusti_laivu--;
+				cout << "Botas numuse Jusu laiva, kurio koordinates buvo: " << "(" << cpuX << ", " << cpuY << ")" << endl;
+			}
+			else
+			{
+				ar_botas_numuse = false;
+				cout << "Botas Nepataike" << endl;
+			}
+			position1 = 11; // sets position1 and position2 to 11
+			position2 = 11; // so that the while loop will initiate below
+
+			while (position1 > 9 || position2 > 9) // loops while position1 is more than 9 OR position 2  is more than 9.
+			{
+				if (botas_rado_laivu == 10 || zaidejas_rado_laivu == 10)
+				{
+					break;
+				}
+				cout << "Spekite, kur slepiasi kompiuterio laivai: "; // prompts the user to enter co-ordinates.
+
+				cin >> position1 >> position2; // takes the keyboard input and stores it in position 
+
+				while (cin.fail()) // this will inintiate if the user enters a non integer input.
+				{
+					cin.clear(); // clears the cin.
+					cin.ignore(); // ignores so it does not go in to an infinite loop
+					cout << "Neteisingos koordinates, prasome bandyti dar karta: "; cin >> position1 >> position2; // re prompts the user to enter their input
+				}
+			}
+			if (zaidejas.Puolimas(position1, position2)) // checks if the boolean value for the Attack function is true
+			{
+				ar_zaidejas_numuse = true; 
+				zaidejas_rado_laivu++; 
+				zaidejui_liko_numusti_laivu--; 
+				cout << "Jus radote: " << zaidejas_rado_laivu << " jums dar liko numusti: " << zaidejui_liko_numusti_laivu <<  endl; // alerts the user of how many battleships they have found, and how many more they need to get.
+
+			}
+			else // anything else
+			{
+				ar_zaidejas_numuse = false; // sets isTrue to false
+				cout << "Deja, nepataikete" << endl; // alerts the user that there is no ship in that position
+			}
+
+			cout << "Jus turire: " << zaidejas.Sveiki_laivai() << " sveikus laivus" << endl; // tells the user how many more ships there is
+			cout << "Ar noretumete pasiduoti (y/n)?: "; cin >> which; // asks the user if they want to surrender and stores the input into char.
+
+			system("CLS"); // clears the console to eliminate clutter
+
+			zaidejolentele.Lenteles_Atnaujinimas(ar_zaidejas_numuse, position1, position2); // updates the boards
+			botolentele.Lenteles_Atnaujinimas(ar_botas_numuse, cpuX, cpuY);
+
+			cout << "CPU's Board" << endl;
+			botolentele.Lenteles_Rodymas();
+			cout << "Your Board: " << endl;
+			zaidejolentele.Lenteles_Rodymas(); // prints the new boards
+
+			if (which == 'y') // checks if which is equal to y
+			{
+				break; // breaks from the loop
+			}
+			else if (zaidejas_rado_laivu == 10 || botas_rado_laivu == 10)
+			{
+				break;
+			}
+
+		}
+
+
+		cout << "Game Over!" << endl;
+		cout << "your grid: " << endl;
+		cout << "The number 2 represents ships that have been hit" << endl;
+		zaidejas.Koordinates();
+		cout << "----------------------------------------------------" << endl;
+		cout << "CPU's Grid" << endl;
+		botas.Koordinates();
+
+		cout << "Would you like to rerun, or exit (r/e)"; cin >> kartojam;
+	} while (kartojam == 'r' || kartojam == 'R'); 
+	system("pause");
+	return 0;
+}

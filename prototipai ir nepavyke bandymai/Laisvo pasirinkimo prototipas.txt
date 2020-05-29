@@ -1,0 +1,144 @@
+#include <iostream>
+#include <stdlib.h>
+#include <time.h>
+
+using namespace std;
+
+class Zaidimas
+{
+private:
+	const static int ilgis = 10;
+	const static int plotis = 10;
+	int atskyrimas;
+	int laivu_kiekis;
+	int lentele[ilgis][plotis];
+public:
+	Zaidimas() {
+		laivu_kiekis = 10;
+		atskyrimas = 0;
+	}
+
+	void Tuscia_Lentele() {
+		for (int x = 0; x < ilgis; x++) {
+			for (int y = 0; y < plotis; y++) {
+				lentele[x][y] = 0;
+			}
+		}
+	}
+	void Koordinates(){
+		cout<< "   0 1 2 3 4 5 6 7 8 9" << endl;
+		cout << "-----------------------" << endl;
+		for (int x = 0; x < ilgis; x++)
+		{
+			cout << atskyrimas << "| ";
+			atskyrimas++;
+			for (int y = 0; y < ilgis; y++)
+			{
+				cout << lentele[x][y] << " ";
+			}
+			cout << endl;
+		}
+	}
+	int Sveiki_laivai() {
+		int c = 0;
+		for (int x = 0; x < ilgis; x++)
+		{
+			for (int y = 0; y < plotis; y++)
+			{
+				if (lentele[x][y] == 1)
+				{
+					c++;
+				}
+			}
+		}
+		return c;
+	}
+	void Susidedam_laivus() {
+		int xPos, yPos,kelintas=1;
+		for (int i = 0; i < laivu_kiekis; i++) {
+			cout << "Iveskite koordinates kurioje vietoje norite pastatyti savo "<< kelintas <<" viena kvadrata uzimtanti laiveli" << endl;
+			cin >> xPos >> yPos;
+			if (lentele[xPos][yPos] != 1) {
+				lentele[xPos][yPos] = 1;
+			}
+			kelintas++;
+		}
+		system("CLS");
+	}
+		bool Puolimas(int _x, int _y) {
+			if (lentele[_x][_y] == 1) {
+				lentele[_x] [_y] = 2;
+				return true;
+			}
+			return false;
+		}
+		~Zaidimas() {};
+};
+class Lentele
+{
+private:
+	const static int ilgis = 10;
+	const static int plotis = 10;
+	char remai[ilgis][plotis];
+public:
+	void Braizom_lentele() {
+		for (int x = 0; x < ilgis; x++)
+		{
+			for (int y = 0; y < plotis; y++)
+			{
+				remai[x][y] = '-';
+			}
+		}
+	}
+	void Lenteles_Atnaujinimas(bool i, int x, int y) {
+		int xPos = x , yPos = y;
+		if (i == true) 
+		{
+			remai[xPos][yPos] = 'Y';
+		}
+		else
+		{
+			remai[xPos][yPos] = 'N'; 
+		}
+	}
+	void Lenteles_Rodymas() {
+		int a = 0;
+		cout << "  0 1 2 3 4 5 6 7 8 9" << endl;
+		for (int x = 0; x < ilgis; x++) { 
+			cout << a << " "; 
+			a++; 
+			for (int y = 0; y < plotis; y++) {
+				cout << remai[x][y] << " ";
+			}
+			cout << endl;
+		}
+	}
+	~Lentele() {};
+};
+
+int main() {
+	char kartojam;
+	
+		srand(time(NULL));
+
+		Zaidimas zaidejas;
+		Zaidimas botas;
+
+		Lentele zaidejolentele;
+		Lentele botolentele;
+
+		zaidejolentele.Braizom_lentele();
+		botolentele.Braizom_lentele();
+
+		cout << "Zaidejo lentele: " << endl;
+		zaidejolentele.Lenteles_Rodymas();
+
+		zaidejas.Susidedam_laivus();
+
+		zaidejolentele.Lenteles_Rodymas();
+
+		cout << "-----------------------" << endl;
+		cout << "Boto lentele: " << endl;
+		botolentele.Lenteles_Rodymas();
+		system("pause");
+}
